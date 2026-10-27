@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXORA</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #050505;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: clamp(44px, 13vw, 76px);
+      font-weight: 900;
+      letter-spacing: -3px;
+      margin: 20px 0 12px;
+    }
+
+    .subtitle {
+      color: #888;
+      font-size: 13px;
+      letter-spacing: 3px;
+      margin-bottom: 42px;
+    }
+
+    .avatar {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: #191919;
+      border: 1px solid #333;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    h2 {
+      font-size: 23px;
+      margin: 0 0 8px;
+    }
+
+    .bio {
+      color: #999;
+      margin-bottom: 28px;
+    }
+
+    .link {
+      display: block;
+      padding: 17px;
+      margin: 12px 0;
+      border: 1px solid #303030;
+      border-radius: 12px;
+      background: #111;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .link:hover {
+      background: #242424;
+      border-color: #777;
+    }
+
+    footer {
+      color: #555;
+      font-size: 12px;
+      margin-top: 38px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="logo">NEXORA</div>
+    <div class="subtitle">YOUR LINKS. YOUR IDENTITY.</div>
+
+    <div class="avatar">N</div>
+    <h2>Your Name</h2>
+    <p class="bio">Welcome to my world.</p>
+
+    <a class="link" href="https://instagram.com/">Instagram ↗</a>
+    <a class="link" href="https://tiktok.com/">TikTok ↗</a>
+    <a class="link" href="https://youtube.com/">YouTube ↗</a>
+    <a class="link" href="https://discord.com/">Discord ↗</a>
+
+    <footer>POWERED BY NEXORA</footer>
+  </main>
+</body>
+</html>
