@@ -2,108 +2,116 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXORA</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #050505;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      padding: 60px 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 480px;
-      text-align: center;
-    }
-
-    .logo {
-      font-size: clamp(44px, 13vw, 76px);
-      font-weight: 900;
-      letter-spacing: -3px;
-      margin: 20px 0 12px;
-    }
-
-    .subtitle {
-      color: #888;
-      font-size: 13px;
-      letter-spacing: 3px;
-      margin-bottom: 42px;
-    }
-
-    .avatar {
-      width: 88px;
-      height: 88px;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      background: #191919;
-      border: 1px solid #333;
-      display: grid;
-      place-items: center;
-      font-size: 32px;
-      font-weight: bold;
-    }
-
-    h2 {
-      font-size: 23px;
-      margin: 0 0 8px;
-    }
-
-    .bio {
-      color: #999;
-      margin-bottom: 28px;
-    }
-
-    .link {
-      display: block;
-      padding: 17px;
-      margin: 12px 0;
-      border: 1px solid #303030;
-      border-radius: 12px;
-      background: #111;
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.2s;
-    }
-
-    .link:hover {
-      background: #242424;
-      border-color: #777;
-    }
-
-    footer {
-      color: #555;
-      font-size: 12px;
-      margin-top: 38px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXORA — Your Identity</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#050505;color:white;font-family:Arial,sans-serif;min-height:100vh;display:grid;place-items:center;padding:24px}
+main{width:100%;max-width:390px}
+.logo{text-align:center;font-size:48px;font-weight:900;letter-spacing:-2px;margin-bottom:8px}
+.sub{text-align:center;color:#888;font-size:10px;letter-spacing:3px;margin-bottom:36px}
+.tabs{display:flex;border-bottom:1px solid #333;margin-bottom:28px}
+.tabs button{width:50%;background:none;color:#888;border:0;border-bottom:2px solid transparent;padding:14px;cursor:pointer}
+.tabs button.active{color:white;border-color:white}
+label{display:block;font-size:13px;margin:17px 0 8px}
+input{width:100%;padding:15px;background:#101010;border:1px solid #333;border-radius:9px;color:white;font-size:15px;outline:none}
+input:focus{border-color:#aaa}
+.submit{width:100%;padding:15px;margin-top:22px;border:0;border-radius:9px;background:white;color:black;font-weight:bold;font-size:15px;cursor:pointer}
+.note{text-align:center;color:#888;font-size:12px;line-height:1.6;margin-top:20px}
+#message{font-size:13px;line-height:1.5;margin-top:16px;text-align:center}
+</style>
 </head>
 <body>
-  <main class="container">
-    <div class="logo">NEXORA</div>
-    <div class="subtitle">YOUR LINKS. YOUR IDENTITY.</div>
+<main>
+  <div class="logo">NEXORA</div>
+  <div class="sub">YOUR LINKS. YOUR IDENTITY.</div>
 
-    <div class="avatar">N</div>
-    <h2>Your Name</h2>
-    <p class="bio">Welcome to my world.</p>
+  <div class="tabs">
+    <button id="loginTab" class="active" type="button">Anmelden</button>
+    <button id="signupTab" type="button">Registrieren</button>
+  </div>
 
-    <a class="link" href="https://instagram.com/">Instagram ↗</a>
-    <a class="link" href="https://tiktok.com/">TikTok ↗</a>
-    <a class="link" href="https://youtube.com/">YouTube ↗</a>
-    <a class="link" href="https://discord.com/">Discord ↗</a>
+  <form id="authForm">
+    <label for="email">E-Mail</label>
+    <input id="email" type="email" placeholder="du@beispiel.de" autocomplete="email" required>
 
-    <footer>POWERED BY NEXORA</footer>
-  </main>
+    <label for="password">Passwort</label>
+    <input id="password" type="password" placeholder="Mindestens 8 Zeichen" minlength="8" autocomplete="current-password" required>
+
+    <button class="submit" id="submit" type="submit">Anmelden</button>
+  </form>
+
+  <div id="message" role="status"></div>
+  <div class="note">Sicher anmelden mit NEXORA.<br>POWERED BY NEXORA</div>
+</main>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// Ersetze diese beiden Platzhalter durch deine Supabase-Werte:
+const SUPABASE_URL = 'DEINE_PROJECT_URL';
+const SUPABASE_KEY = 'DEIN_PUBLISHABLE_KEY';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+let mode = 'login';
+
+const loginTab = document.querySelector('#loginTab');
+const signupTab = document.querySelector('#signupTab');
+const submit = document.querySelector('#submit');
+const password = document.querySelector('#password');
+const message = document.querySelector('#message');
+
+function setMode(next) {
+  mode = next;
+  loginTab.classList.toggle('active', mode === 'login');
+  signupTab.classList.toggle('active', mode === 'signup');
+  submit.textContent = mode === 'login' ? 'Anmelden' : 'Konto erstellen';
+  password.autocomplete = mode === 'login' ? 'current-password' : 'new-password';
+  message.textContent = '';
+}
+
+loginTab.addEventListener('click', () => setMode('login'));
+signupTab.addEventListener('click', () => setMode('signup'));
+
+document.querySelector('#authForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  submit.disabled = true;
+  message.textContent = 'Einen Moment …';
+
+  const email = document.querySelector('#email').value.trim();
+  const pass = password.value;
+
+  try {
+    if (SUPABASE_URL === 'DEINE_PROJECT_URL' ||
+        SUPABASE_KEY === 'DEIN_PUBLISHABLE_KEY') {
+      throw new Error('Bitte trage zuerst deine Supabase-URL und deinen Publishable Key im Code ein.');
+    }
+
+    if (mode === 'signup') {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password: pass,
+        options: {
+          emailRedirectTo: 'https://joris346.github.io/Nexora/'
+        }
+      });
+      if (error) throw error;
+      message.textContent = 'Wenn eine Bestätigung erforderlich ist, prüfe deine E-Mails.';
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password: pass
+      });
+      if (error) throw error;
+      message.textContent = 'Du bist angemeldet! Dein NEXORA-Profil bauen wir als Nächstes.';
+    }
+  } catch (error) {
+    message.textContent = error.message || 'Es ist ein Fehler aufgetreten.';
+  } finally {
+    submit.disabled = false;
+  }
+});
+</script>
 </body>
 </html>
