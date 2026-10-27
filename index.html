@@ -4,10 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#080808">
   <title>NEXORA — Deine Links. Dein Profil.</title>
-  <meta name="description" content="Dein persönlicher Platz für alle wichtigen Links.">
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root {
       color-scheme: dark;
@@ -24,8 +25,7 @@
       margin: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       min-height: 100vh;
     }
 
@@ -46,10 +46,13 @@
       background: transparent;
     }
 
-    button:disabled { opacity: .5; cursor: wait; }
+    button:disabled {
+      opacity: .5;
+      cursor: wait;
+    }
 
     header {
-      height: 76px;
+      min-height: 76px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -58,7 +61,6 @@
     }
 
     .logo {
-      color: #fff;
       font-weight: 900;
       font-size: 24px;
       letter-spacing: 4px;
@@ -77,9 +79,16 @@
       margin-bottom: 20px;
     }
 
-    h1 { font-size: clamp(30px, 7vw, 48px); margin: 0 0 12px; }
+    h1 {
+      font-size: clamp(30px, 7vw, 48px);
+      margin: 0 0 12px;
+      letter-spacing: -1.5px;
+    }
+
     h2 { font-size: 20px; margin: 0 0 18px; }
+
     p { color: var(--muted); line-height: 1.6; }
+
     .muted { color: var(--muted); font-size: 14px; }
 
     label {
@@ -100,6 +109,7 @@
     }
 
     input:focus, textarea:focus { border-color: #888; }
+
     textarea { min-height: 90px; resize: vertical; }
 
     .actions {
@@ -110,6 +120,7 @@
     }
 
     .actions button { flex: 1; }
+
     .hidden { display: none !important; }
 
     .notice {
@@ -133,6 +144,7 @@
     }
 
     .link-info { min-width: 0; }
+
     .link-info strong, .link-info a {
       display: block;
       overflow-wrap: anywhere;
@@ -164,6 +176,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="logo">NEXORA</div>
@@ -182,8 +195,8 @@
       aria-live="polite"></div>
 
     <section id="authPanel" class="panel">
-      <h2 id="authTitle">Willkommen bei NEXORA</h2>
-      <p id="authDescription">Melde dich an oder erstelle dein Konto.</p>
+      <h2>Willkommen bei NEXORA</h2>
+      <p>Melde dich an oder erstelle dein Konto.</p>
 
       <form id="authForm">
         <label for="email">E-Mail-Adresse</label>
@@ -195,19 +208,23 @@
           autocomplete="current-password" minlength="6" required>
 
         <div class="actions">
-          <button id="loginBtn" type="submit">Anmelden</button>
+          <button type="submit">Anmelden</button>
           <button id="signupBtn" class="secondary" type="button">
             Konto erstellen
           </button>
         </div>
       </form>
-      <p class="muted">Bei aktivierter E-Mail-Bestätigung musst du
-        zuerst den Link in deiner E-Mail öffnen.</p>
+
+      <p class="muted">
+        Wenn die E-Mail-Bestätigung aktiviert ist, bestätige zuerst
+        deine E-Mail-Adresse.
+      </p>
     </section>
 
     <section id="dashboard" class="hidden">
       <div class="panel">
         <h2>Dein Profil</h2>
+
         <form id="profileForm">
           <label for="username">Benutzername</label>
           <input id="username" maxlength="30" placeholder="Dein Name"
@@ -225,10 +242,11 @@
 
       <div class="panel">
         <h2>Neuen Link hinzufügen</h2>
+
         <form id="linkForm">
           <label for="linkTitle">Titel</label>
           <input id="linkTitle" maxlength="80"
-            placeholder="Zum Beispiel: Mein Instagram" required>
+            placeholder="Mein Instagram" required>
 
           <label for="linkUrl">Webadresse</label>
           <input id="linkUrl" type="url" maxlength="2048"
@@ -242,7 +260,6 @@
 
       <div class="panel">
         <h2>Deine Links</h2>
-        <p class="muted">Hier siehst du die Links deines Kontos.</p>
         <div id="linksList"></div>
       </div>
     </section>
@@ -251,12 +268,11 @@
   <footer>© <span id="year"></span> NEXORA</footer>
 
   <script>
-    // 1. Hier deine Supabase-Projektadresse eintragen.
+    // SUPABASE-KONFIGURATION
     const SUPABASE_URL =
       "https://owdcfbdiqwuwfmgvrdec.supabase.co";
 
-    // 2. Ersetze den Text zwischen den Anführungszeichen
-    // durch deinen vorhandenen Supabase Publishable Key.
+    // Ersetze NUR den Platzhalter durch deinen Publishable Key.
     const SUPABASE_KEY = "DEIN_PUBLISHABLE_KEY_HIER";
 
     const $ = (id) => document.getElementById(id);
@@ -264,23 +280,17 @@
     $("year").textContent = new Date().getFullYear();
 
     const notice = $("notice");
-    let supabaseClient = null;
+    let client = null;
     let currentUser = null;
 
-    function showNotice(message) {
-      notice.textContent = message;
+    function message(text) {
+      notice.textContent = text;
       notice.classList.remove("hidden");
     }
 
-    function clearNotice() {
+    function clearMessage() {
       notice.textContent = "";
       notice.classList.add("hidden");
-    }
-
-    function setBusy(form, busy) {
-      form.querySelectorAll("button").forEach((button) => {
-        button.disabled = busy;
-      });
     }
 
     function showDashboard(signedIn) {
@@ -288,6 +298,12 @@
       $("dashboard").classList.toggle("hidden", !signedIn);
       $("logoutBtn").classList.toggle("hidden", !signedIn);
       $("intro").classList.toggle("hidden", signedIn);
+    }
+
+    function busy(form, value) {
+      form.querySelectorAll("button").forEach((button) => {
+        button.disabled = value;
+      });
     }
 
     function validWebUrl(value) {
@@ -299,34 +315,8 @@
       }
     }
 
-    async function ensureProfile(user) {
-      const { data, error } = await supabaseClient
-        .from("profiles")
-        .select("id, username, bio")
-        .eq("id", user.id)
-        .maybeSingle();
-
-      if (error) throw error;
-
-      if (!data) {
-        const { error: insertError } = await supabaseClient
-          .from("profiles")
-          .insert({
-            id: user.id,
-            username: user.email ? user.email.split("@")[0] : "NEXORA User",
-            bio: ""
-          });
-
-        if (insertError) throw insertError;
-        return;
-      }
-
-      $("username").value = data.username || "";
-      $("bio").value = data.bio || "";
-    }
-
     async function loadProfile() {
-      const { data, error } = await supabaseClient
+      const { data, error } = await client
         .from("profiles")
         .select("id, username, bio")
         .eq("id", currentUser.id)
@@ -339,8 +329,30 @@
         $("bio").value = data.bio || "";
       } else {
         $("username").value =
-          currentUser.email ? currentUser.email.split("@")[0] : "";
+          currentUser.email?.split("@")[0] || "";
         $("bio").value = "";
+      }
+    }
+
+    async function ensureProfile() {
+      const { data, error } = await client
+        .from("profiles")
+        .select("id")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (!data) {
+        const { error: insertError } = await client
+          .from("profiles")
+          .insert({
+            id: currentUser.id,
+            username: currentUser.email?.split("@")[0] || "NEXORA",
+            bio: ""
+          });
+
+        if (insertError) throw insertError;
       }
     }
 
@@ -348,7 +360,7 @@
       const list = $("linksList");
       list.replaceChildren();
 
-      const { data, error } = await supabaseClient
+      const { data, error } = await client
         .from("links")
         .select("id, title, url, created_at")
         .eq("user_id", currentUser.id)
@@ -384,25 +396,27 @@
         remove.className = "secondary";
         remove.type = "button";
         remove.textContent = "Löschen";
+
         remove.addEventListener("click", async () => {
           if (!confirm("Diesen Link wirklich löschen?")) return;
 
           remove.disabled = true;
-          const { error: deleteError } = await supabaseClient
-            .from("links")
-            .delete()
-            .eq("id", item.id)
-            .eq("user_id", currentUser.id);
 
-          if (deleteError) {
-            showNotice("Link konnte nicht gelöscht werden: " +
-              deleteError.message);
+          try {
+            const { error: deleteError } = await client
+              .from("links")
+              .delete()
+              .eq("id", item.id)
+              .eq("user_id", currentUser.id);
+
+            if (deleteError) throw deleteError;
+
+            message("Link gelöscht.");
+            await loadLinks();
+          } catch (error) {
+            message("Fehler beim Löschen: " + error.message);
             remove.disabled = false;
-            return;
           }
-
-          showNotice("Link gelöscht.");
-          await loadLinks();
         });
 
         info.append(title, anchor);
@@ -411,26 +425,20 @@
       }
     }
 
-    async function refreshDashboard() {
+    async function openDashboard() {
       showDashboard(true);
+      await ensureProfile();
       await loadProfile();
       await loadLinks();
     }
 
     $("authForm").addEventListener("submit", async (event) => {
       event.preventDefault();
-      clearNotice();
-
-      if (!supabaseClient) {
-        showNotice("Bitte trage zuerst deinen Supabase Publishable Key ein.");
-        return;
-      }
-
-      const form = $("authForm");
-      setBusy(form, true);
+      clearMessage();
+      busy($("authForm"), true);
 
       try {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
+        const { data, error } = await client.auth.signInWithPassword({
           email: $("email").value.trim(),
           password: $("password").value
         });
@@ -438,30 +446,23 @@
         if (error) throw error;
 
         currentUser = data.user;
-        await ensureProfile(currentUser);
-        await refreshDashboard();
-        showNotice("Du bist angemeldet.");
+        await openDashboard();
+        message("Du bist angemeldet.");
       } catch (error) {
-        showNotice("Anmeldung fehlgeschlagen: " + error.message);
+        message("Anmeldung fehlgeschlagen: " + error.message);
       } finally {
-        setBusy(form, false);
+        busy($("authForm"), false);
       }
     });
 
     $("signupBtn").addEventListener("click", async () => {
-      clearNotice();
+      clearMessage();
 
-      if (!supabaseClient) {
-        showNotice("Bitte trage zuerst deinen Supabase Publishable Key ein.");
-        return;
-      }
-
-      const form = $("authForm");
-      if (!form.reportValidity()) return;
-      setBusy(form, true);
+      if (!$("authForm").reportValidity()) return;
+      busy($("authForm"), true);
 
       try {
-        const { data, error } = await supabaseClient.auth.signUp({
+        const { data, error } = await client.auth.signUp({
           email: $("email").value.trim(),
           password: $("password").value
         });
@@ -470,38 +471,35 @@
 
         if (data.session && data.user) {
           currentUser = data.user;
-          await ensureProfile(currentUser);
-          await refreshDashboard();
-          showNotice("Dein Konto wurde erstellt.");
+          await openDashboard();
+          message("Dein Konto wurde erstellt.");
         } else {
-          showNotice("Konto erstellt. Bitte bestätige deine E-Mail-Adresse. " +
+          message("Konto erstellt. Bitte bestätige deine E-Mail-Adresse. " +
             "Danach kannst du dich anmelden.");
         }
       } catch (error) {
-        showNotice("Registrierung fehlgeschlagen: " + error.message);
+        message("Registrierung fehlgeschlagen: " + error.message);
       } finally {
-        setBusy(form, false);
+        busy($("authForm"), false);
       }
     });
 
     $("profileForm").addEventListener("submit", async (event) => {
       event.preventDefault();
-      clearNotice();
-      if (!currentUser) return;
+      clearMessage();
 
       const username = $("username").value.trim();
       const bio = $("bio").value.trim();
 
-      if (!username) {
-        showNotice("Bitte gib einen Benutzernamen ein.");
+      if (!currentUser || !username) {
+        message("Bitte gib einen Benutzernamen ein.");
         return;
       }
 
-      const form = $("profileForm");
-      setBusy(form, true);
+      busy($("profileForm"), true);
 
       try {
-        const { error } = await supabaseClient
+        const { error } = await client
           .from("profiles")
           .upsert({
             id: currentUser.id,
@@ -511,34 +509,32 @@
           }, { onConflict: "id" });
 
         if (error) throw error;
-        showNotice("Profil gespeichert.");
+        message("Profil gespeichert.");
       } catch (error) {
-        showNotice("Profil konnte nicht gespeichert werden: " +
+        message("Profil konnte nicht gespeichert werden: " +
           error.message);
       } finally {
-        setBusy(form, false);
+        busy($("profileForm"), false);
       }
     });
 
     $("linkForm").addEventListener("submit", async (event) => {
       event.preventDefault();
-      clearNotice();
-      if (!currentUser) return;
+      clearMessage();
 
       const title = $("linkTitle").value.trim();
       const url = $("linkUrl").value.trim();
 
-      if (!title || !validWebUrl(url)) {
-        showNotice("Bitte gib einen Titel und eine gültige Webadresse " +
-          "mit http:// oder https:// ein.");
+      if (!currentUser || !title || !validWebUrl(url)) {
+        message("Bitte gib einen Titel und eine gültige Webadresse " +
+          "mit https:// oder http:// ein.");
         return;
       }
 
-      const form = $("linkForm");
-      setBusy(form, true);
+      busy($("linkForm"), true);
 
       try {
-        const { error } = await supabaseClient.from("links").insert({
+        const { error } = await client.from("links").insert({
           user_id: currentUser.id,
           title,
           url
@@ -546,60 +542,59 @@
 
         if (error) throw error;
 
-        form.reset();
+        $("linkForm").reset();
         await loadLinks();
-        showNotice("Link hinzugefügt.");
+        message("Link hinzugefügt.");
       } catch (error) {
-        showNotice("Link konnte nicht hinzugefügt werden: " +
+        message("Link konnte nicht hinzugefügt werden: " +
           error.message);
       } finally {
-        setBusy(form, false);
+        busy($("linkForm"), false);
       }
     });
 
     $("logoutBtn").addEventListener("click", async () => {
-      const { error } = await supabaseClient.auth.signOut();
+      const { error } = await client.auth.signOut();
 
       if (error) {
-        showNotice("Abmelden fehlgeschlagen: " + error.message);
+        message("Abmelden fehlgeschlagen: " + error.message);
         return;
       }
 
       currentUser = null;
       showDashboard(false);
-      showNotice("Du wurdest abgemeldet.");
+      message("Du wurdest abgemeldet.");
     });
 
     async function init() {
       if (SUPABASE_KEY === "DEIN_PUBLISHABLE_KEY_HIER") {
-        showNotice("Die Website ist fast bereit. Trage deinen Supabase " +
-          "Publishable Key in der markierten Zeile im Code ein.");
+        message("Bitte trage deinen Supabase Publishable Key in der " +
+          "markierten Codezeile ein.");
         return;
       }
 
       if (!window.supabase) {
-        showNotice("Supabase konnte nicht geladen werden. Prüfe deine " +
+        message("Supabase konnte nicht geladen werden. Prüfe deine " +
           "Internetverbindung und lade die Seite erneut.");
         return;
       }
 
-      supabaseClient = window.supabase.createClient(
+      client = window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
       );
 
       try {
-        const { data, error } = await supabaseClient.auth.getUser();
+        const { data, error } = await client.auth.getUser();
+
         if (error) throw error;
 
         if (data.user) {
           currentUser = data.user;
-          await ensureProfile(currentUser);
-          await refreshDashboard();
+          await openDashboard();
         }
       } catch (error) {
-        showNotice("Sitzung konnte nicht geladen werden: " +
-          error.message);
+        message("Sitzung konnte nicht geladen werden: " + error.message);
       }
     }
 
