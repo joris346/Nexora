@@ -3,172 +3,162 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXORA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#000000">
+  <title>NEXORA</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      min-height: 100vh;
+      margin: 0;
       background: #000;
       color: #fff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
     }
-
-    .container {
-      width: 100%;
-      max-width: 390px;
-      text-align: center;
-    }
-
-    .logo {
-      font-size: 38px;
-      font-weight: 850;
-      letter-spacing: 7px;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      color: #888;
-      font-size: 14px;
-      margin-bottom: 35px;
-    }
-
-    .panel {
-      border: 1px solid #292929;
-      border-radius: 18px;
-      padding: 25px 20px;
-      background: #080808;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 22px;
-    }
-
     button, input {
       font: inherit;
       border-radius: 10px;
     }
-
-    .tab {
+    button { cursor: pointer; }
+    .wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 28px 20px 50px;
+    }
+    header { text-align: center; padding: 30px 0; }
+    .logo {
+      font-size: 38px;
+      font-weight: 850;
+      letter-spacing: 7px;
+    }
+    .muted { color: #888; }
+    .card {
+      border: 1px solid #292929;
+      border-radius: 18px;
+      background: #080808;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+    .tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+    .tabs button {
       flex: 1;
-      border: 1px solid #333;
       padding: 12px 6px;
       color: #aaa;
       background: #111;
-      cursor: pointer;
-    }
-
-    .tab.active {
-      background: #fff;
-      color: #000;
-      border-color: #fff;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 12px;
-      background: #111;
-      color: #fff;
       border: 1px solid #333;
-      outline: none;
     }
-
-    input:focus {
-      border-color: #aaa;
-    }
-
-    .main-button {
+    .tabs button.active { background: #fff; color: #000; }
+    input {
+      display: block;
       width: 100%;
-      border: none;
+      margin: 10px 0;
+      padding: 14px;
+      color: #fff;
+      background: #111;
+      border: 1px solid #333;
+    }
+    .primary {
+      width: 100%;
       padding: 14px;
       background: #fff;
       color: #000;
+      border: 0;
       font-weight: 700;
-      cursor: pointer;
-      margin-top: 5px;
+      margin-top: 8px;
     }
-
-    .main-button:disabled {
-      opacity: .5;
-      cursor: wait;
+    .secondary {
+      padding: 10px 14px;
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
     }
-
-    #message {
-      color: #ccc;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-top: 16px;
+    .hidden { display: none !important; }
+    #message { font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+    .profile { text-align: center; }
+    .avatar {
+      width: 76px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      margin: 0 auto 14px;
+      background: #fff;
+      color: #000;
+      font-size: 25px;
+      font-weight: 800;
+    }
+    .link-item {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      background: #111;
+      border: 1px solid #333;
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 10px;
       overflow-wrap: anywhere;
     }
-
-    .footer {
-      color: #666;
-      font-size: 12px;
-      margin-top: 22px;
-    }
-
-    .hidden {
-      display: none;
-    }
+    .link-item:hover { border-color: #aaa; }
+    .row { display: flex; gap: 8px; }
+    .row input { min-width: 0; }
+    footer { text-align: center; color: #666; font-size: 12px; padding: 16px; }
   </style>
 </head>
 
 <body>
-  <main class="container">
-    <div class="logo">NEXORA</div>
-    <p class="subtitle">Deine Links. Dein Profil. Deine Welt.</p>
+  <main class="wrap">
+    <header>
+      <div class="logo">NEXORA</div>
+      <p class="muted">Deine Links. Dein Profil. Deine Welt.</p>
+    </header>
 
-    <section class="panel">
+    <section id="authCard" class="card">
       <div class="tabs">
-        <button class="tab active" id="loginTab" type="button">
-          Anmelden
-        </button>
-        <button class="tab" id="signupTab" type="button">
-          Registrieren
-        </button>
+        <button id="loginTab" class="active" type="button">Anmelden</button>
+        <button id="signupTab" type="button">Registrieren</button>
       </div>
 
       <form id="authForm">
-        <input
-          id="email"
-          type="email"
-          placeholder="E-Mail-Adresse"
-          autocomplete="email"
-          required
-        >
-
-        <input
-          id="password"
-          type="password"
-          placeholder="Passwort (mind. 6 Zeichen)"
-          autocomplete="current-password"
-          minlength="6"
-          required
-        >
-
-        <button class="main-button" id="submitButton" type="submit">
-          Anmelden
-        </button>
+        <input id="email" type="email" placeholder="E-Mail-Adresse"
+          autocomplete="email" required>
+        <input id="password" type="password" placeholder="Passwort (mind. 6 Zeichen)"
+          autocomplete="current-password" minlength="6" required>
+        <button id="authButton" class="primary" type="submit">Anmelden</button>
       </form>
-
       <p id="message" role="status" aria-live="polite"></p>
     </section>
 
-    <p class="footer">NEXORA © 2026 · Einfach. Persönlich. Du.</p>
+    <section id="profileCard" class="hidden">
+      <div class="card profile">
+        <div class="avatar" id="avatar">N</div>
+        <h2 id="displayName">Mein Profil</h2>
+        <p id="displayEmail" class="muted"></p>
+        <button id="logoutButton" class="secondary" type="button">Abmelden</button>
+      </div>
+
+      <div class="card">
+        <h3>Profil bearbeiten</h3>
+        <form id="profileForm">
+          <input id="username" maxlength="30" placeholder="Dein Benutzername" required>
+          <input id="bio" maxlength="160" placeholder="Kurze Beschreibung (optional)">
+          <button class="primary" type="submit">Profil speichern</button>
+        </form>
+        <p id="profileMessage" class="muted"></p>
+      </div>
+
+      <div class="card">
+        <h3>Meine Links</h3>
+        <form id="linkForm">
+          <input id="linkTitle" maxlength="60" placeholder="Name des Links" required>
+          <input id="linkUrl" type="url" placeholder="https://example.com" required>
+          <button class="primary" type="submit">Link hinzufügen</button>
+        </form>
+        <p id="linkMessage" class="muted"></p>
+        <div id="links"></div>
+      </div>
+    </section>
+
+    <footer>NEXORA © 2026</footer>
   </main>
 
   <script type="module">
@@ -178,95 +168,248 @@
     const SUPABASE_URL =
       'https://owdcfbdiqwuwfmgvrdec.supabase.co';
 
-    // Hier deinen Supabase Publishable Key einsetzen:
+    // Ersetze diesen Text durch deinen Publishable Key.
     const SUPABASE_KEY = 'HIER_DEIN_PUBLISHABLE_KEY';
 
-    const supabase = createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
-    const form = document.querySelector('#authForm');
-    const emailInput = document.querySelector('#email');
-    const passwordInput = document.querySelector('#password');
-    const submitButton = document.querySelector('#submitButton');
-    const message = document.querySelector('#message');
-    const loginTab = document.querySelector('#loginTab');
-    const signupTab = document.querySelector('#signupTab');
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    const $ = (selector) => document.querySelector(selector);
 
     let mode = 'login';
+    let currentUser = null;
+    let profile = null;
+    let userLinks = [];
 
-    function setMode(newMode) {
-      mode = newMode;
-
-      const isLogin = mode === 'login';
-
-      loginTab.classList.toggle('active', isLogin);
-      signupTab.classList.toggle('active', !isLogin);
-
-      submitButton.textContent = isLogin
-        ? 'Anmelden'
-        : 'Konto erstellen';
-
-      passwordInput.autocomplete = isLogin
-        ? 'current-password'
-        : 'new-password';
-
-      message.textContent = '';
+    function showMessage(selector, text) {
+      $(selector).textContent = text;
     }
 
-    loginTab.addEventListener('click', () => setMode('login'));
-    signupTab.addEventListener('click', () => setMode('signup'));
+    function setMode(nextMode) {
+      mode = nextMode;
+      $('#loginTab').classList.toggle('active', mode === 'login');
+      $('#signupTab').classList.toggle('active', mode === 'signup');
+      $('#authButton').textContent =
+        mode === 'login' ? 'Anmelden' : 'Konto erstellen';
+      $('#password').autocomplete =
+        mode === 'login' ? 'current-password' : 'new-password';
+      showMessage('#message', '');
+    }
 
-    form.addEventListener('submit', async (event) => {
+    $('#loginTab').addEventListener('click', () => setMode('login'));
+    $('#signupTab').addEventListener('click', () => setMode('signup'));
+
+    $('#authForm').addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      if (
-        SUPABASE_KEY === 'HIER_DEIN_PUBLISHABLE_KEY' ||
-        !SUPABASE_KEY.startsWith('sb_publishable_')
-      ) {
-        message.textContent =
-          'Bitte trage zuerst deinen Supabase Publishable Key im Code ein.';
+      if (SUPABASE_KEY === 'HIER_DEIN_PUBLISHABLE_KEY' ||
+          !SUPABASE_KEY.startsWith('sb_publishable_')) {
+        showMessage('#message', 'Bitte füge zuerst deinen Publishable Key im Code ein.');
         return;
       }
 
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
-
-      submitButton.disabled = true;
-      message.textContent = 'Einen Moment …';
+      const email = $('#email').value.trim();
+      const password = $('#password').value;
+      const button = $('#authButton');
+      button.disabled = true;
+      showMessage('#message', 'Bitte warten …');
 
       try {
+        let error;
+
         if (mode === 'signup') {
-          const { data, error } = await supabase.auth.signUp({
-            email,
-            password
-          });
+          const result = await supabase.auth.signUp({ email, password });
+          error = result.error;
 
-          if (error) throw error;
-
-          message.textContent = data.session
-            ? 'Konto erstellt! Du bist angemeldet.'
-            : 'Registrierung gestartet. Prüfe deine E-Mails, um dein Konto zu bestätigen.';
+          if (!error) {
+            showMessage('#message', result.data.session
+              ? 'Konto erstellt!'
+              : 'Bitte prüfe deine E-Mails und bestätige deine Registrierung.');
+          }
         } else {
-          const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password
+          const result = await supabase.auth.signInWithPassword({
+            email, password
           });
-
-          if (error) throw error;
-
-          message.textContent = 'Erfolgreich angemeldet!';
-
-          // Hier können wir später dein NEXORA-Profil öffnen.
+          error = result.error;
+          if (!error) showMessage('#message', 'Anmeldung erfolgreich!');
         }
+
+        if (error) throw error;
       } catch (error) {
-        message.textContent = error.message ||
-          'Das hat nicht funktioniert. Bitte versuche es erneut.';
+        showMessage('#message', error.message || 'Ein Fehler ist aufgetreten.');
       } finally {
-        submitButton.disabled = false;
+        button.disabled = false;
       }
     });
+
+    async function loadProfile() {
+      if (!currentUser) return;
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('username, bio')
+        .eq('id', currentUser.id)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      profile = data;
+      $('#username').value = profile?.username || '';
+      $('#bio').value = profile?.bio || '';
+      $('#displayName').textContent =
+        profile?.username || 'Mein Profil';
+      $('#avatar').textContent =
+        (profile?.username || currentUser.email || 'N')
+          .charAt(0).toUpperCase();
+    }
+
+    async function loadLinks() {
+      const { data, error } = await supabase
+        .from('links')
+        .select('id, title, url, created_at')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      userLinks = data || [];
+      renderLinks();
+    }
+
+    function renderLinks() {
+      const container = $('#links');
+      container.replaceChildren();
+
+      if (!userLinks.length) {
+        const empty = document.createElement('p');
+        empty.className = 'muted';
+        empty.textContent = 'Du hast noch keine Links hinzugefügt.';
+        container.append(empty);
+        return;
+      }
+
+      for (const link of userLinks) {
+        const row = document.createElement('div');
+        const anchor = document.createElement('a');
+        anchor.className = 'link-item';
+        anchor.href = link.url;
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+        anchor.textContent = link.title;
+        row.append(anchor);
+
+        const remove = document.createElement('button');
+        remove.className = 'secondary';
+        remove.type = 'button';
+        remove.textContent = 'Link löschen';
+        remove.addEventListener('click', async () => {
+          const { error } = await supabase.from('links')
+            .delete()
+            .eq('id', link.id)
+            .eq('user_id', currentUser.id);
+
+          if (error) {
+            showMessage('#linkMessage', error.message);
+            return;
+          }
+
+          await loadLinks();
+        });
+
+        row.append(remove);
+        container.append(row);
+      }
+    }
+
+    $('#profileForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!currentUser) return;
+
+      const username = $('#username').value.trim();
+      const bio = $('#bio').value.trim();
+
+      try {
+        const { error } = await supabase.from('profiles').upsert({
+          id: currentUser.id,
+          username,
+          bio,
+          updated_at: new Date().toISOString()
+        });
+
+        if (error) throw error;
+
+        profile = { username, bio };
+        $('#displayName').textContent = username;
+        $('#avatar').textContent = (username || 'N').charAt(0).toUpperCase();
+        showMessage('#profileMessage', 'Profil gespeichert.');
+      } catch (error) {
+        showMessage('#profileMessage',
+          'Profil konnte nicht gespeichert werden: ' + error.message);
+      }
+    });
+
+    $('#linkForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!currentUser) return;
+
+      const title = $('#linkTitle').value.trim();
+      const rawUrl = $('#linkUrl').value.trim();
+
+      try {
+        const parsedUrl = new URL(rawUrl);
+        if (!['https:', 'http:'].includes(parsedUrl.protocol)) {
+          throw new Error('Bitte verwende eine gültige HTTP- oder HTTPS-Adresse.');
+        }
+
+        const { error } = await supabase.from('links').insert({
+          user_id: currentUser.id,
+          title,
+          url: parsedUrl.href
+        });
+
+        if (error) throw error;
+
+        $('#linkForm').reset();
+        showMessage('#linkMessage', 'Link hinzugefügt.');
+        await loadLinks();
+      } catch (error) {
+        showMessage('#linkMessage', 'Link konnte nicht gespeichert werden: ' +
+          error.message);
+      }
+    });
+
+    $('#logoutButton').addEventListener('click', async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        showMessage('#message', error.message);
+      }
+    });
+
+    async function updatePage(session) {
+      currentUser = session?.user || null;
+      $('#authCard').classList.toggle('hidden', !!currentUser);
+      $('#profileCard').classList.toggle('hidden', !currentUser);
+
+      if (!currentUser) {
+        profile = null;
+        userLinks = [];
+        return;
+      }
+
+      $('#displayEmail').textContent = currentUser.email || '';
+
+      try {
+        await loadProfile();
+        await loadLinks();
+      } catch (error) {
+        showMessage('#profileMessage',
+          'Datenbank noch nicht eingerichtet: ' + error.message);
+      }
+    }
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      updatePage(session);
+    });
+
+    const { data: { session } } = await supabase.auth.getSession();
+    await updatePage(session);
   </script>
 </body>
 </html>
