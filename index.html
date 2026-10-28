@@ -2,239 +2,338 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXORA — Deine Welt. Ein Link.</title>
-  <meta name="theme-color" content="#000000">
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; background: #050505; color: white;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    .wrap { width: min(92%, 600px); margin: auto; padding: 32px 0 60px; }
-    header { text-align: center; padding: 28px 0 35px; }
-    .logo {
-      display: inline-grid; place-items: center; width: 62px; height: 62px;
-      border: 2px solid white; font-size: 32px; font-weight: 900;
-      transform: rotate(45deg); margin-bottom: 20px;
-    }
-    .logo span { transform: rotate(-45deg); }
-    h1 { letter-spacing: 8px; font-size: 29px; margin: 8px 0; }
-    .tagline { color: #aaa; font-size: 13px; letter-spacing: 2px; }
-    .panel {
-      border: 1px solid #303030; border-radius: 18px;
-      background: #0d0d0d; padding: 22px; margin-bottom: 18px;
-    }
-    h2 { font-size: 18px; margin: 0 0 16px; }
-    input, button {
-      width: 100%; padding: 14px; margin-top: 10px;
-      border-radius: 10px; font-size: 15px;
-    }
-    input { background: #050505; border: 1px solid #393939; color: white; }
-    button { border: 1px solid white; cursor: pointer; font-weight: 700; }
-    .primary { background: white; color: black; }
-    .secondary { background: transparent; color: white; }
-    button:disabled { opacity: .5; cursor: wait; }
-    .muted { color: #aaa; font-size: 13px; line-height: 1.5; }
-    #status { white-space: pre-wrap; overflow-wrap: anywhere; }
-    .link { display: block; padding: 15px; margin-top: 10px; border: 1px solid #444;
-      border-radius: 10px; color: white; text-decoration: none; text-align: center; }
-    .hidden { display: none; }
-    footer { text-align: center; color: #777; font-size: 12px; padding-top: 15px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXORA — Deine Welt. Ein Link.</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#050505;color:#fff;font-family:Arial,sans-serif}
+main{width:min(92%,580px);margin:auto;padding:35px 0 60px}
+header{text-align:center;padding:20px 0 35px}
+.logo{font-size:38px;font-weight:900;border:2px solid white;width:64px;height:64px;display:grid;place-items:center;margin:0 auto 20px}
+h1{letter-spacing:8px;margin:8px 0}
+.sub{color:#aaa;letter-spacing:2px;font-size:12px}
+.panel{border:1px solid #333;border-radius:16px;background:#0d0d0d;padding:22px;margin-bottom:16px}
+h2{font-size:18px}
+input,textarea,button{display:block;width:100%;margin-top:10px;padding:14px;border-radius:9px;font-size:15px}
+input,textarea{background:#050505;color:white;border:1px solid #444}
+button{cursor:pointer;font-weight:bold;border:1px solid white}
+.primary{background:white;color:black}
+.secondary{background:transparent;color:white}
+.muted{color:#aaa;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.hidden{display:none!important}
+.link{display:block;text-align:center;padding:15px;border:1px solid #444;border-radius:10px;color:white;text-decoration:none;margin-top:10px;overflow-wrap:anywhere}
+#status{white-space:pre-wrap;overflow-wrap:anywhere}
+footer{text-align:center;color:#777;font-size:12px}
+</style>
 </head>
 <body>
-  <main class="wrap">
-    <header>
-      <div class="logo"><span>N</span></div>
-      <h1>NEXORA</h1>
-      <p class="tagline">DEINE WELT. EIN LINK.</p>
-    </header>
+<main>
+<header>
+<div class="logo">N</div>
+<h1>NEXORA</h1>
+<p class="sub">DEINE WELT. EIN LINK.</p>
+</header>
 
-    <section class="panel" id="authPanel">
-      <h2>Dein Account</h2>
-      <input id="email" type="email" autocomplete="email" placeholder="E-Mail-Adresse">
-      <input id="password" type="password" autocomplete="current-password"
-        placeholder="Passwort (mindestens 6 Zeichen)">
-      <button class="primary" id="signup">Account erstellen</button>
-      <button class="secondary" id="login">Anmelden</button>
-      <p class="muted">Falls du deine E-Mail bestätigen musst, öffne die Nachricht von Supabase und bestätige deine Adresse.</p>
-    </section>
+<section class="panel" id="authPanel">
+<h2>Willkommen bei NEXORA</h2>
+<input id="email" type="email" autocomplete="email" placeholder="E-Mail-Adresse">
+<input id="password" type="password" autocomplete="current-password" placeholder="Passwort">
+<button class="primary" id="signup">Account erstellen</button>
+<button class="secondary" id="login">Anmelden</button>
+<p class="muted">Falls du eine Bestätigungs-E-Mail erhältst, bestätige zuerst deine E-Mail-Adresse.</p>
+</section>
 
-    <section class="panel hidden" id="profilePanel">
-      <h2>Dein Profil</h2>
-      <p class="muted" id="signedInAs"></p>
-      <input id="displayName" maxlength="60" placeholder="Dein Name oder Profilname">
-      <input id="bio" maxlength="160" placeholder="Kurze Beschreibung">
-      <button class="primary" id="saveProfile">Profil speichern</button>
-      <h2 style="margin-top:26px">Deine Links</h2>
-      <input id="linkTitle" maxlength="60" placeholder="Link-Titel">
-      <input id="linkUrl" type="url" placeholder="https://example.com">
-      <button class="secondary" id="addLink">Link hinzufügen</button>
-      <div id="myLinks"></div>
-      <button class="secondary" id="logout">Abmelden</button>
-    </section>
+<section class="panel hidden" id="editor">
+<h2>Dein Profil gestalten</h2>
+<p class="muted" id="account"></p>
+<label for="username">Username (für deinen Profil-Link)</label>
+<input id="username" maxlength="30" placeholder="z. B. joris">
+<label for="displayName">Anzeigename</label>
+<input id="displayName" maxlength="60" placeholder="Dein Name">
+<label for="bio">Beschreibung</label>
+<textarea id="bio" maxlength="160" rows="3" placeholder="Erzähl etwas über dich"></textarea>
+<button class="primary" id="saveProfile">Profil speichern</button>
 
-    <section class="panel hidden" id="publicPanel">
-      <h2 id="publicName">NEXORA</h2>
-      <p class="muted" id="publicBio"></p>
-      <div id="publicLinks"></div>
-    </section>
+<h2 style="margin-top:28px">Deine Links</h2>
+<input id="linkTitle" maxlength="60" placeholder="Link-Titel">
+<input id="linkUrl" type="url" placeholder="https://example.com">
+<button class="secondary" id="addLink">Link hinzufügen</button>
+<div id="myLinks"></div>
 
-    <p class="muted" id="status" role="status" aria-live="polite"></p>
-    <footer>NEXORA © 2026</footer>
-  </main>
+<h2 style="margin-top:28px">Dein öffentlicher Profil-Link</h2>
+<input id="profileUrl" readonly>
+<button class="primary" id="copyLink">Profil-Link kopieren</button>
+<button class="secondary" id="viewProfile">Öffentliches Profil ansehen</button>
+<button class="secondary" id="logout">Abmelden</button>
+</section>
 
-  <script type="module">
-    import { createClient } from
-      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+<section class="panel hidden" id="publicProfile">
+<h2 id="publicName">NEXORA</h2>
+<p class="muted" id="publicBio"></p>
+<div id="publicLinks"></div>
+<p class="muted" id="publicUsername"></p>
+</section>
 
-    const SUPABASE_URL = 'https://owdcfbdiqwuwfmgvrdec.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_j-u3qWjjb4d0mTIWTSsBeQ_cBOkRfLj';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+<p id="status" class="muted" role="status" aria-live="polite"></p>
+<footer>NEXORA © 2026</footer>
+</main>
 
-    const $ = id => document.getElementById(id);
-    let currentUser = null;
-    let links = [];
+<script type="module">
+import { createClient } from
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-    function status(message) { $('status').textContent = message; }
-    function show(id, visible) { $(id).classList.toggle('hidden', !visible); }
+const URL = 'https://owdcfbdiqwuwfmgvrdec.supabase.co';
+const KEY = 'sb_publishable_j-u3qWjjb4d0mTIWTSsBeQ_cBOkRfLj';
+const db = createClient(URL, KEY);
 
-    function safeUrl(value) {
-      try {
-        const url = new URL(value);
-        return ['http:', 'https:'].includes(url.protocol) ? url.href : null;
-      } catch { return null; }
+const $ = id => document.getElementById(id);
+let user = null;
+let myLinks = [];
+
+function message(text){ $('status').textContent = text; }
+function panel(id,show){ $(id).classList.toggle('hidden',!show); }
+
+function cleanUsername(value){
+  return value.toLowerCase().trim()
+    .replace(/[^a-z0-9_-]/g,'')
+    .slice(0,30);
+}
+
+function validUrl(value){
+  try{
+    const u = new URL(value);
+    return ['https:','http:'].includes(u.protocol) ? u.href : null;
+  }catch{return null;}
+}
+
+function makeProfileUrl(name){
+  return location.origin + location.pathname + '?u=' + encodeURIComponent(name);
+}
+
+async function loadEditor(){
+  const {data:{user:current},error:authError}=await db.auth.getUser();
+  if(authError) throw authError;
+  user=current;
+  panel('authPanel',!user);
+  panel('editor',!!user);
+  if(!user) return;
+
+  $('account').textContent='Angemeldet als '+user.email;
+
+  const {data:profile,error}=await db.from('profiles')
+    .select('id,username,display_name,bio')
+    .eq('id',user.id).maybeSingle();
+  if(error) throw error;
+
+  $('username').value=profile?.username||'';
+  $('displayName').value=profile?.display_name||'';
+  $('bio').value=profile?.bio||'';
+  updateProfileUrl();
+
+  const {data:rows,error:linkError}=await db.from('links')
+    .select('id,title,url').eq('user_id',user.id).order('id');
+  if(linkError) throw linkError;
+  myLinks=rows||[];
+  renderMyLinks();
+}
+
+function updateProfileUrl(){
+  const name=cleanUsername($('username').value);
+  $('profileUrl').value=name ? makeProfileUrl(name) : '';
+}
+
+$('username').addEventListener('input',updateProfileUrl);
+
+function renderMyLinks(){
+  const container=$('myLinks');
+  container.replaceChildren();
+  myLinks.forEach(link=>{
+    const row=document.createElement('div');
+    const a=document.createElement('a');
+    a.className='link';
+    a.textContent=link.title||link.url;
+    const url=validUrl(link.url);
+    if(url){a.href=url;a.target='_blank';a.rel='noopener noreferrer';}
+    row.append(a);
+
+    const remove=document.createElement('button');
+    remove.className='secondary';
+    remove.textContent='Link löschen';
+    remove.addEventListener('click',async()=>{
+      const {error}=await db.from('links').delete().eq('id',link.id);
+      if(error){message('Fehler: '+error.message);return;}
+      myLinks=myLinks.filter(x=>x.id!==link.id);
+      renderMyLinks();
+      message('Link gelöscht.');
+    });
+    row.append(remove);
+    container.append(row);
+  });
+}
+
+$('signup').addEventListener('click',async()=>{
+  const email=$('email').value.trim();
+  const password=$('password').value;
+  if(!email||password.length<6){
+    message('Bitte E-Mail und ein Passwort mit mindestens 6 Zeichen eingeben.');
+    return;
+  }
+  try{
+    message('Account wird erstellt …');
+    const {data,error}=await db.auth.signUp({email,password});
+    if(error) throw error;
+    if(data.session){
+      await loadEditor();
+      message('Account erstellt.');
+    }else{
+      message('Account erstellt. Bestätige deine E-Mail, falls du dazu aufgefordert wirst, und melde dich danach an.');
     }
+  }catch(e){message('Fehler: '+e.message);}
+});
 
-    async function loadProfile() {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (error) throw error;
-      currentUser = user;
-      show('authPanel', !user);
-      show('profilePanel', !!user);
-      if (!user) return;
+$('login').addEventListener('click',async()=>{
+  const email=$('email').value.trim();
+  const password=$('password').value;
+  if(!email||!password){message('Bitte E-Mail und Passwort eingeben.');return;}
+  try{
+    message('Anmeldung läuft …');
+    const {error}=await db.auth.signInWithPassword({email,password});
+    if(error) throw error;
+    await loadEditor();
+    message('Du bist angemeldet.');
+  }catch(e){message('Anmeldung fehlgeschlagen: '+e.message);}
+});
 
-      $('signedInAs').textContent = 'Angemeldet als ' + user.email;
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles').select('*').eq('id', user.id).maybeSingle();
-      if (profileError) throw profileError;
+$('saveProfile').addEventListener('click',async()=>{
+  if(!user){message('Bitte zuerst anmelden.');return;}
+  const username=cleanUsername($('username').value);
+  const display_name=$('displayName').value.trim();
+  const bio=$('bio').value.trim();
 
-      $('displayName').value = profile?.display_name || '';
-      $('bio').value = profile?.bio || '';
+  if(username.length<3){
+    message('Dein Username muss mindestens 3 Zeichen haben.');
+    return;
+  }
+  if(!display_name){
+    message('Bitte gib einen Anzeigenamen ein.');
+    return;
+  }
 
-      const { data, error: linksError } = await supabase
-        .from('links').select('*').eq('user_id', user.id).order('id');
-      if (linksError) throw linksError;
-      links = data || [];
-      renderLinks();
-    }
+  try{
+    message('Profil wird gespeichert …');
+    const {error}=await db.from('profiles').upsert({
+      id:user.id,username,display_name,bio
+    },{onConflict:'id'});
+    if(error) throw error;
+    $('username').value=username;
+    updateProfileUrl();
+    message('Profil gespeichert. Dein persönlicher Link ist bereit.');
+  }catch(e){
+    message('Speichern fehlgeschlagen: '+e.message);
+  }
+});
 
-    function renderLinks() {
-      const container = $('myLinks');
-      container.replaceChildren();
-      links.forEach(link => {
-        const item = document.createElement('div');
-        const anchor = document.createElement('a');
-        const url = safeUrl(link.url);
-        anchor.className = 'link';
-        anchor.textContent = link.title || link.url;
-        if (url) { anchor.href = url; anchor.target = '_blank'; anchor.rel = 'noopener noreferrer'; }
-        item.append(anchor);
+$('addLink').addEventListener('click',async()=>{
+  if(!user){message('Bitte zuerst anmelden.');return;}
+  const title=$('linkTitle').value.trim();
+  const url=validUrl($('linkUrl').value.trim());
+  if(!title||!url){
+    message('Bitte Titel und gültige URL mit https:// eingeben.');
+    return;
+  }
+  try{
+    const {data,error}=await db.from('links').insert({
+      user_id:user.id,title,url
+    }).select('id,title,url').single();
+    if(error) throw error;
+    myLinks.push(data);
+    renderMyLinks();
+    $('linkTitle').value='';
+    $('linkUrl').value='';
+    message('Link hinzugefügt.');
+  }catch(e){message('Link konnte nicht gespeichert werden: '+e.message);}
+});
 
-        const remove = document.createElement('button');
-        remove.className = 'secondary';
-        remove.textContent = 'Link löschen';
-        remove.addEventListener('click', async () => {
-          const { error } = await supabase.from('links').delete().eq('id', link.id);
-          if (error) return status('Fehler: ' + error.message);
-          links = links.filter(x => x.id !== link.id);
-          renderLinks();
-          status('Link gelöscht.');
-        });
-        item.append(remove);
-        container.append(item);
-      });
-    }
+$('copyLink').addEventListener('click',async()=>{
+  const link=$('profileUrl').value;
+  if(!link){message('Speichere zuerst deinen Username.');return;}
+  try{
+    await navigator.clipboard.writeText(link);
+    message('Profil-Link kopiert!');
+  }catch{
+    $('profileUrl').focus();
+    $('profileUrl').select();
+    message('Link markieren und kopieren.');
+  }
+});
 
-    $('signup').addEventListener('click', async () => {
-      const email = $('email').value.trim();
-      const password = $('password').value;
-      if (!email || password.length < 6) return status('Gib eine gültige E-Mail und ein Passwort mit mindestens 6 Zeichen ein.');
-      $('signup').disabled = true;
-      status('Account wird erstellt …');
-      try {
-        const { data, error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
-        if (data.session) {
-          await loadProfile();
-          status('Account erstellt und angemeldet.');
-        } else {
-          status('Account erstellt. Bitte bestätige deine E-Mail, falls du dazu aufgefordert wirst. Danach kannst du dich anmelden.');
-        }
-      } catch (e) { status('Fehler: ' + e.message); }
-      finally { $('signup').disabled = false; }
-    });
+$('viewProfile').addEventListener('click',()=>{
+  const link=$('profileUrl').value;
+  if(!link){message('Speichere zuerst deinen Username.');return;}
+  location.href=link;
+});
 
-    $('login').addEventListener('click', async () => {
-      const email = $('email').value.trim();
-      const password = $('password').value;
-      if (!email || !password) return status('Bitte E-Mail und Passwort eingeben.');
-      $('login').disabled = true;
-      status('Anmeldung läuft …');
-      try {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        await loadProfile();
-        status('Du bist angemeldet.');
-      } catch (e) { status('Anmeldung fehlgeschlagen: ' + e.message); }
-      finally { $('login').disabled = false; }
-    });
+$('logout').addEventListener('click',async()=>{
+  const {error}=await db.auth.signOut();
+  if(error){message(error.message);return;}
+  user=null;
+  panel('editor',false);
+  panel('authPanel',true);
+  message('Abgemeldet.');
+});
 
-    $('saveProfile').addEventListener('click', async () => {
-      if (!currentUser) return;
-      const display_name = $('displayName').value.trim();
-      const bio = $('bio').value.trim();
-      status('Profil wird gespeichert …');
-      const { error } = await supabase.from('profiles').upsert({
-        id: currentUser.id, display_name, bio
-      });
-      if (error) return status('Speichern fehlgeschlagen: ' + error.message);
-      status('Profil gespeichert.');
-    });
+async function showPublicProfile(username){
+  panel('authPanel',false);
+  panel('editor',false);
+  panel('publicProfile',true);
 
-    $('addLink').addEventListener('click', async () => {
-      if (!currentUser) return;
-      const title = $('linkTitle').value.trim();
-      const url = safeUrl($('linkUrl').value.trim());
-      if (!title || !url) return status('Bitte einen Titel und eine gültige URL mit https:// eingeben.');
-      const { data, error } = await supabase.from('links').insert({
-        user_id: currentUser.id, title, url
-      }).select().single();
-      if (error) return status('Link konnte nicht gespeichert werden: ' + error.message);
-      links.push(data);
-      renderLinks();
-      $('linkTitle').value = '';
-      $('linkUrl').value = '';
-      status('Link hinzugefügt.');
-    });
+  const {data:profile,error}=await db.from('profiles')
+    .select('username,display_name,bio')
+    .eq('username',username).maybeSingle();
+  if(error) throw error;
+  if(!profile){
+    $('publicName').textContent='Profil nicht gefunden';
+    $('publicBio').textContent='Dieser Username existiert nicht oder das Profil ist nicht öffentlich lesbar.';
+    return;
+  }
 
-    $('logout').addEventListener('click', async () => {
-      const { error } = await supabase.auth.signOut();
-      if (error) return status('Abmelden fehlgeschlagen: ' + error.message);
-      currentUser = null;
-      show('profilePanel', false);
-      show('authPanel', true);
-      status('Du wurdest abgemeldet.');
-    });
+  $('publicName').textContent=profile.display_name||profile.username;
+  $('publicBio').textContent=profile.bio||'';
+  $('publicUsername').textContent='@'+profile.username;
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      currentUser = session?.user || null;
-    });
+  const {data:rows,error:linkError}=await db.from('links')
+    .select('title,url').eq('user_id',(
+      await db.from('profiles').select('id').eq('username',username).single()
+    ).data?.id);
+  if(linkError) throw linkError;
 
-    try { await loadProfile(); }
-    catch (e) { status('Startfehler: ' + e.message); }
-  </script>
+  const container=$('publicLinks');
+  container.replaceChildren();
+  (rows||[]).forEach(link=>{
+    const url=validUrl(link.url);
+    if(!url)return;
+    const a=document.createElement('a');
+    a.className='link';
+    a.href=url;
+    a.target='_blank';
+    a.rel='noopener noreferrer';
+    a.textContent=link.title||url;
+    container.append(a);
+  });
+}
+
+try{
+  const params=new URLSearchParams(location.search);
+  const publicUsername=params.get('u');
+  if(publicUsername){
+    await showPublicProfile(cleanUsername(publicUsername));
+  }else{
+    await loadEditor();
+  }
+}catch(e){
+  message('Fehler: '+e.message);
+}
+</script>
 </body>
 </html>
