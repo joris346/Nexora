@@ -3,590 +3,238 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080808">
-  <title>NEXORA — Deine Links. Dein Profil.</title>
-  <meta name="description" content="Dein persönlicher Platz für alle wichtigen Links.">
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXORA — Deine Welt. Ein Link.</title>
+  <meta name="theme-color" content="#000000">
   <style>
-    :root {
-      color-scheme: dark;
-      --bg: #080808;
-      --panel: #111111;
-      --border: #292929;
-      --text: #ffffff;
-      --muted: #a0a0a0;
-    }
-
     * { box-sizing: border-box; }
-
     body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100vh;
+      margin: 0; background: #050505; color: white;
+      font-family: Arial, Helvetica, sans-serif;
     }
-
-    button, input, textarea { font: inherit; }
-
-    button {
-      cursor: pointer;
-      border-radius: 12px;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      background: #fff;
-      color: #000;
-      font-weight: 650;
-    }
-
-    button.secondary {
-      color: #fff;
-      background: transparent;
-    }
-
-    button:disabled { opacity: .5; cursor: wait; }
-
-    header {
-      min-height: 76px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 6%;
-    }
-
+    .wrap { width: min(92%, 600px); margin: auto; padding: 32px 0 60px; }
+    header { text-align: center; padding: 28px 0 35px; }
     .logo {
-      font-weight: 900;
-      font-size: 24px;
-      letter-spacing: 4px;
+      display: inline-grid; place-items: center; width: 62px; height: 62px;
+      border: 2px solid white; font-size: 32px; font-weight: 900;
+      transform: rotate(45deg); margin-bottom: 20px;
     }
-
-    .wrap {
-      width: min(680px, 92%);
-      margin: 44px auto 80px;
-    }
-
+    .logo span { transform: rotate(-45deg); }
+    h1 { letter-spacing: 8px; font-size: 29px; margin: 8px 0; }
+    .tagline { color: #aaa; font-size: 13px; letter-spacing: 2px; }
     .panel {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 20px;
+      border: 1px solid #303030; border-radius: 18px;
+      background: #0d0d0d; padding: 22px; margin-bottom: 18px;
     }
-
-    h1 {
-      font-size: clamp(30px, 7vw, 48px);
-      margin: 0 0 12px;
-      letter-spacing: -1.5px;
+    h2 { font-size: 18px; margin: 0 0 16px; }
+    input, button {
+      width: 100%; padding: 14px; margin-top: 10px;
+      border-radius: 10px; font-size: 15px;
     }
-
-    h2 { font-size: 20px; margin: 0 0 18px; }
-    p { color: var(--muted); line-height: 1.6; }
-    .muted { color: var(--muted); font-size: 14px; }
-
-    label {
-      display: block;
-      margin: 16px 0 8px;
-      font-size: 14px;
-      color: #ddd;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: #080808;
-      color: #fff;
-      outline: none;
-    }
-
-    input:focus, textarea:focus { border-color: #888; }
-    textarea { min-height: 90px; resize: vertical; }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .actions button { flex: 1; }
-    .hidden { display: none !important; }
-
-    .notice {
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 18px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .link-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      border: 1px solid var(--border);
-      padding: 14px;
-      border-radius: 12px;
-      margin-top: 10px;
-    }
-
-    .link-info { min-width: 0; }
-
-    .link-info strong, .link-info a {
-      display: block;
-      overflow-wrap: anywhere;
-    }
-
-    .link-info a {
-      color: #aaa;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-
-    .link-item button {
-      flex-shrink: 0;
-      padding: 9px 12px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #777;
-      border-top: 1px solid var(--border);
-      font-size: 13px;
-    }
-
-    @media (max-width: 480px) {
-      header { padding: 0 5%; }
-      .wrap { margin-top: 28px; }
-      .panel { padding: 18px; }
-    }
+    input { background: #050505; border: 1px solid #393939; color: white; }
+    button { border: 1px solid white; cursor: pointer; font-weight: 700; }
+    .primary { background: white; color: black; }
+    .secondary { background: transparent; color: white; }
+    button:disabled { opacity: .5; cursor: wait; }
+    .muted { color: #aaa; font-size: 13px; line-height: 1.5; }
+    #status { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .link { display: block; padding: 15px; margin-top: 10px; border: 1px solid #444;
+      border-radius: 10px; color: white; text-decoration: none; text-align: center; }
+    .hidden { display: none; }
+    footer { text-align: center; color: #777; font-size: 12px; padding-top: 15px; }
   </style>
 </head>
-
 <body>
-  <header>
-    <div class="logo">NEXORA</div>
-    <button id="logoutBtn" class="secondary hidden" type="button">
-      Abmelden
-    </button>
-  </header>
-
   <main class="wrap">
-    <section id="intro">
-      <h1>Deine Links.<br>Dein Platz.</h1>
-      <p>Ein Profil für alles, was du teilen möchtest.</p>
+    <header>
+      <div class="logo"><span>N</span></div>
+      <h1>NEXORA</h1>
+      <p class="tagline">DEINE WELT. EIN LINK.</p>
+    </header>
+
+    <section class="panel" id="authPanel">
+      <h2>Dein Account</h2>
+      <input id="email" type="email" autocomplete="email" placeholder="E-Mail-Adresse">
+      <input id="password" type="password" autocomplete="current-password"
+        placeholder="Passwort (mindestens 6 Zeichen)">
+      <button class="primary" id="signup">Account erstellen</button>
+      <button class="secondary" id="login">Anmelden</button>
+      <p class="muted">Falls du deine E-Mail bestätigen musst, öffne die Nachricht von Supabase und bestätige deine Adresse.</p>
     </section>
 
-    <div id="notice" class="notice hidden" role="status"
-      aria-live="polite"></div>
-
-    <section id="authPanel" class="panel">
-      <h2>Willkommen bei NEXORA</h2>
-      <p>Melde dich an oder erstelle dein Konto.</p>
-
-      <form id="authForm">
-        <label for="email">E-Mail-Adresse</label>
-        <input id="email" type="email" autocomplete="email"
-          required maxlength="254">
-
-        <label for="password">Passwort</label>
-        <input id="password" type="password"
-          autocomplete="current-password" minlength="6" required>
-
-        <div class="actions">
-          <button type="submit">Anmelden</button>
-          <button id="signupBtn" class="secondary" type="button">
-            Konto erstellen
-          </button>
-        </div>
-      </form>
-
-      <p class="muted">
-        Wenn die E-Mail-Bestätigung aktiviert ist, bestätige zuerst
-        deine E-Mail-Adresse.
-      </p>
+    <section class="panel hidden" id="profilePanel">
+      <h2>Dein Profil</h2>
+      <p class="muted" id="signedInAs"></p>
+      <input id="displayName" maxlength="60" placeholder="Dein Name oder Profilname">
+      <input id="bio" maxlength="160" placeholder="Kurze Beschreibung">
+      <button class="primary" id="saveProfile">Profil speichern</button>
+      <h2 style="margin-top:26px">Deine Links</h2>
+      <input id="linkTitle" maxlength="60" placeholder="Link-Titel">
+      <input id="linkUrl" type="url" placeholder="https://example.com">
+      <button class="secondary" id="addLink">Link hinzufügen</button>
+      <div id="myLinks"></div>
+      <button class="secondary" id="logout">Abmelden</button>
     </section>
 
-    <section id="dashboard" class="hidden">
-      <div class="panel">
-        <h2>Dein Profil</h2>
-
-        <form id="profileForm">
-          <label for="username">Benutzername</label>
-          <input id="username" maxlength="30" placeholder="Dein Name"
-            required>
-
-          <label for="bio">Über dich</label>
-          <textarea id="bio" maxlength="300"
-            placeholder="Ein paar Worte über dich ..."></textarea>
-
-          <div class="actions">
-            <button type="submit">Profil speichern</button>
-          </div>
-        </form>
-      </div>
-
-      <div class="panel">
-        <h2>Neuen Link hinzufügen</h2>
-
-        <form id="linkForm">
-          <label for="linkTitle">Titel</label>
-          <input id="linkTitle" maxlength="80"
-            placeholder="Mein Instagram" required>
-
-          <label for="linkUrl">Webadresse</label>
-          <input id="linkUrl" type="url" maxlength="2048"
-            placeholder="https://example.com" required>
-
-          <div class="actions">
-            <button type="submit">Link hinzufügen</button>
-          </div>
-        </form>
-      </div>
-
-      <div class="panel">
-        <h2>Deine Links</h2>
-        <div id="linksList"></div>
-      </div>
+    <section class="panel hidden" id="publicPanel">
+      <h2 id="publicName">NEXORA</h2>
+      <p class="muted" id="publicBio"></p>
+      <div id="publicLinks"></div>
     </section>
+
+    <p class="muted" id="status" role="status" aria-live="polite"></p>
+    <footer>NEXORA © 2026</footer>
   </main>
 
-  <footer>© <span id="year"></span> NEXORA</footer>
+  <script type="module">
+    import { createClient } from
+      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-  <script>
-    // Supabase-Verbindung
-    const SUPABASE_URL =
-      "https://owdcfbdiqwuwfmgvrdec.supabase.co";
+    const SUPABASE_URL = 'https://owdcfbdiqwuwfmgvrdec.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_j-u3qWjjb4d0mTIWTSsBeQ_cBOkRfLj';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const SUPABASE_KEY =
-      "sb_publishable_j-u3qWjjb4d0mTIWTSsBeQ_cBOkRfLj";
-
-    const $ = (id) => document.getElementById(id);
-
-    $("year").textContent = new Date().getFullYear();
-
-    const notice = $("notice");
-    let client = null;
+    const $ = id => document.getElementById(id);
     let currentUser = null;
+    let links = [];
 
-    function message(text) {
-      notice.textContent = text;
-      notice.classList.remove("hidden");
-    }
+    function status(message) { $('status').textContent = message; }
+    function show(id, visible) { $(id).classList.toggle('hidden', !visible); }
 
-    function clearMessage() {
-      notice.textContent = "";
-      notice.classList.add("hidden");
-    }
-
-    function showDashboard(signedIn) {
-      $("authPanel").classList.toggle("hidden", signedIn);
-      $("dashboard").classList.toggle("hidden", !signedIn);
-      $("logoutBtn").classList.toggle("hidden", !signedIn);
-      $("intro").classList.toggle("hidden", signedIn);
-    }
-
-    function busy(form, value) {
-      form.querySelectorAll("button").forEach((button) => {
-        button.disabled = value;
-      });
-    }
-
-    function validWebUrl(value) {
+    function safeUrl(value) {
       try {
         const url = new URL(value);
-        return url.protocol === "https:" || url.protocol === "http:";
-      } catch {
-        return false;
-      }
+        return ['http:', 'https:'].includes(url.protocol) ? url.href : null;
+      } catch { return null; }
     }
 
     async function loadProfile() {
-      const { data, error } = await client
-        .from("profiles")
-        .select("id, username, bio")
-        .eq("id", currentUser.id)
-        .maybeSingle();
-
+      const { data: { user }, error } = await supabase.auth.getUser();
       if (error) throw error;
+      currentUser = user;
+      show('authPanel', !user);
+      show('profilePanel', !!user);
+      if (!user) return;
 
-      if (data) {
-        $("username").value = data.username || "";
-        $("bio").value = data.bio || "";
-      } else {
-        $("username").value =
-          currentUser.email?.split("@")[0] || "";
-        $("bio").value = "";
-      }
+      $('signedInAs').textContent = 'Angemeldet als ' + user.email;
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles').select('*').eq('id', user.id).maybeSingle();
+      if (profileError) throw profileError;
+
+      $('displayName').value = profile?.display_name || '';
+      $('bio').value = profile?.bio || '';
+
+      const { data, error: linksError } = await supabase
+        .from('links').select('*').eq('user_id', user.id).order('id');
+      if (linksError) throw linksError;
+      links = data || [];
+      renderLinks();
     }
 
-    async function ensureProfile() {
-      const { data, error } = await client
-        .from("profiles")
-        .select("id")
-        .eq("id", currentUser.id)
-        .maybeSingle();
+    function renderLinks() {
+      const container = $('myLinks');
+      container.replaceChildren();
+      links.forEach(link => {
+        const item = document.createElement('div');
+        const anchor = document.createElement('a');
+        const url = safeUrl(link.url);
+        anchor.className = 'link';
+        anchor.textContent = link.title || link.url;
+        if (url) { anchor.href = url; anchor.target = '_blank'; anchor.rel = 'noopener noreferrer'; }
+        item.append(anchor);
 
-      if (error) throw error;
-
-      if (!data) {
-        const { error: insertError } = await client
-          .from("profiles")
-          .insert({
-            id: currentUser.id,
-            username: currentUser.email?.split("@")[0] || "NEXORA",
-            bio: ""
-          });
-
-        if (insertError) throw insertError;
-      }
-    }
-
-    async function loadLinks() {
-      const list = $("linksList");
-      list.replaceChildren();
-
-      const { data, error } = await client
-        .from("links")
-        .select("id, title, url, created_at")
-        .eq("user_id", currentUser.id)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-
-      if (!data || data.length === 0) {
-        const empty = document.createElement("p");
-        empty.className = "muted";
-        empty.textContent = "Du hast noch keine Links hinzugefügt.";
-        list.appendChild(empty);
-        return;
-      }
-
-      for (const item of data) {
-        const row = document.createElement("div");
-        row.className = "link-item";
-
-        const info = document.createElement("div");
-        info.className = "link-info";
-
-        const title = document.createElement("strong");
-        title.textContent = item.title;
-
-        const anchor = document.createElement("a");
-        anchor.textContent = item.url;
-        anchor.href = item.url;
-        anchor.target = "_blank";
-        anchor.rel = "noopener noreferrer";
-
-        const remove = document.createElement("button");
-        remove.className = "secondary";
-        remove.type = "button";
-        remove.textContent = "Löschen";
-
-        remove.addEventListener("click", async () => {
-          if (!confirm("Diesen Link wirklich löschen?")) return;
-
-          remove.disabled = true;
-
-          try {
-            const { error: deleteError } = await client
-              .from("links")
-              .delete()
-              .eq("id", item.id)
-              .eq("user_id", currentUser.id);
-
-            if (deleteError) throw deleteError;
-
-            message("Link gelöscht.");
-            await loadLinks();
-          } catch (error) {
-            message("Fehler beim Löschen: " + error.message);
-            remove.disabled = false;
-          }
+        const remove = document.createElement('button');
+        remove.className = 'secondary';
+        remove.textContent = 'Link löschen';
+        remove.addEventListener('click', async () => {
+          const { error } = await supabase.from('links').delete().eq('id', link.id);
+          if (error) return status('Fehler: ' + error.message);
+          links = links.filter(x => x.id !== link.id);
+          renderLinks();
+          status('Link gelöscht.');
         });
-
-        info.append(title, anchor);
-        row.append(info, remove);
-        list.appendChild(row);
-      }
+        item.append(remove);
+        container.append(item);
+      });
     }
 
-    async function openDashboard() {
-      showDashboard(true);
-      await ensureProfile();
-      await loadProfile();
-      await loadLinks();
-    }
-
-    $("authForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      clearMessage();
-      busy($("authForm"), true);
-
+    $('signup').addEventListener('click', async () => {
+      const email = $('email').value.trim();
+      const password = $('password').value;
+      if (!email || password.length < 6) return status('Gib eine gültige E-Mail und ein Passwort mit mindestens 6 Zeichen ein.');
+      $('signup').disabled = true;
+      status('Account wird erstellt …');
       try {
-        const { data, error } = await client.auth.signInWithPassword({
-          email: $("email").value.trim(),
-          password: $("password").value
-        });
-
+        const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-
-        currentUser = data.user;
-        await openDashboard();
-        message("Du bist angemeldet.");
-      } catch (error) {
-        message("Anmeldung fehlgeschlagen: " + error.message);
-      } finally {
-        busy($("authForm"), false);
-      }
-    });
-
-    $("signupBtn").addEventListener("click", async () => {
-      clearMessage();
-
-      if (!$("authForm").reportValidity()) return;
-      busy($("authForm"), true);
-
-      try {
-        const { data, error } = await client.auth.signUp({
-          email: $("email").value.trim(),
-          password: $("password").value
-        });
-
-        if (error) throw error;
-
-        if (data.session && data.user) {
-          currentUser = data.user;
-          await openDashboard();
-          message("Dein Konto wurde erstellt.");
+        if (data.session) {
+          await loadProfile();
+          status('Account erstellt und angemeldet.');
         } else {
-          message("Konto erstellt. Bitte bestätige deine E-Mail-Adresse. " +
-            "Danach kannst du dich anmelden.");
+          status('Account erstellt. Bitte bestätige deine E-Mail, falls du dazu aufgefordert wirst. Danach kannst du dich anmelden.');
         }
-      } catch (error) {
-        message("Registrierung fehlgeschlagen: " + error.message);
-      } finally {
-        busy($("authForm"), false);
-      }
+      } catch (e) { status('Fehler: ' + e.message); }
+      finally { $('signup').disabled = false; }
     });
 
-    $("profileForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      clearMessage();
-
-      const username = $("username").value.trim();
-      const bio = $("bio").value.trim();
-
-      if (!currentUser || !username) {
-        message("Bitte gib einen Benutzernamen ein.");
-        return;
-      }
-
-      busy($("profileForm"), true);
-
+    $('login').addEventListener('click', async () => {
+      const email = $('email').value.trim();
+      const password = $('password').value;
+      if (!email || !password) return status('Bitte E-Mail und Passwort eingeben.');
+      $('login').disabled = true;
+      status('Anmeldung läuft …');
       try {
-        const { error } = await client
-          .from("profiles")
-          .upsert({
-            id: currentUser.id,
-            username,
-            bio,
-            updated_at: new Date().toISOString()
-          }, { onConflict: "id" });
-
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        message("Profil gespeichert.");
-      } catch (error) {
-        message("Profil konnte nicht gespeichert werden: " +
-          error.message);
-      } finally {
-        busy($("profileForm"), false);
-      }
+        await loadProfile();
+        status('Du bist angemeldet.');
+      } catch (e) { status('Anmeldung fehlgeschlagen: ' + e.message); }
+      finally { $('login').disabled = false; }
     });
 
-    $("linkForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      clearMessage();
-
-      const title = $("linkTitle").value.trim();
-      const url = $("linkUrl").value.trim();
-
-      if (!currentUser || !title || !validWebUrl(url)) {
-        message("Bitte gib einen Titel und eine gültige Webadresse " +
-          "mit https:// oder http:// ein.");
-        return;
-      }
-
-      busy($("linkForm"), true);
-
-      try {
-        const { error } = await client.from("links").insert({
-          user_id: currentUser.id,
-          title,
-          url
-        });
-
-        if (error) throw error;
-
-        $("linkForm").reset();
-        await loadLinks();
-        message("Link hinzugefügt.");
-      } catch (error) {
-        message("Link konnte nicht hinzugefügt werden: " +
-          error.message);
-      } finally {
-        busy($("linkForm"), false);
-      }
+    $('saveProfile').addEventListener('click', async () => {
+      if (!currentUser) return;
+      const display_name = $('displayName').value.trim();
+      const bio = $('bio').value.trim();
+      status('Profil wird gespeichert …');
+      const { error } = await supabase.from('profiles').upsert({
+        id: currentUser.id, display_name, bio
+      });
+      if (error) return status('Speichern fehlgeschlagen: ' + error.message);
+      status('Profil gespeichert.');
     });
 
-    $("logoutBtn").addEventListener("click", async () => {
-      const { error } = await client.auth.signOut();
+    $('addLink').addEventListener('click', async () => {
+      if (!currentUser) return;
+      const title = $('linkTitle').value.trim();
+      const url = safeUrl($('linkUrl').value.trim());
+      if (!title || !url) return status('Bitte einen Titel und eine gültige URL mit https:// eingeben.');
+      const { data, error } = await supabase.from('links').insert({
+        user_id: currentUser.id, title, url
+      }).select().single();
+      if (error) return status('Link konnte nicht gespeichert werden: ' + error.message);
+      links.push(data);
+      renderLinks();
+      $('linkTitle').value = '';
+      $('linkUrl').value = '';
+      status('Link hinzugefügt.');
+    });
 
-      if (error) {
-        message("Abmelden fehlgeschlagen: " + error.message);
-        return;
-      }
-
+    $('logout').addEventListener('click', async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) return status('Abmelden fehlgeschlagen: ' + error.message);
       currentUser = null;
-      showDashboard(false);
-      message("Du wurdest abgemeldet.");
+      show('profilePanel', false);
+      show('authPanel', true);
+      status('Du wurdest abgemeldet.');
     });
 
-    async function init() {
-      if (!window.supabase) {
-        message("Supabase konnte nicht geladen werden. Prüfe deine " +
-          "Internetverbindung und lade die Seite erneut.");
-        return;
-      }
+    supabase.auth.onAuthStateChange((_event, session) => {
+      currentUser = session?.user || null;
+    });
 
-      client = window.supabase.createClient(
-        
-        
-      "https://owdcfbdiqwuwfmgvrdec.supabase.co",
-sb_publishable_j-u3qWjjb4d0mTIWTSsBeQ_cBOkRfLj
-      try {
-        const { data, error } = await client.auth.getUser();
-
-        if (error) throw error;
-
-        if (data.user) {
-          currentUser = data.user;
-          await openDashboard();
-        }
-      } catch (error) {
-        message("Sitzung konnte nicht geladen werden: " + error.message);
-      }
-    }
-
-    init();
+    try { await loadProfile(); }
+    catch (e) { status('Startfehler: ' + e.message); }
   </script>
 </body>
 </html>
